@@ -1,0 +1,19 @@
+version: '3.9'
+services:
+  node:
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
+    tty: true
+    volumes:
+      - .:/home/node/app
+    networks:
+      - default
+      - traefik-gateway
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-gateway"
+      - "traefik.http.routers.fhict-skilltree-node.rule=Host(`fhict-skilltree-visualization-exp.localhost`)"
+      - "traefik.http.routers.fhict-skilltree-node.entrypoints=https"
+      - "traefik.http.routers.fhict-skilltree-node.tls=true"
+      - "traefik.http.services.fhict-skilltree-node.loadbalancer.server.port=3000"
